@@ -25,21 +25,16 @@ export default function Home() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      <button onClick={handleSearch}>Search</button>
+<button
+  onClick={() =>
+    setVideoUrl(
+      `https://f003.backblazeb2.com/file/briday-weddings-archive/${r.clip_path}#t=${r.start_sec}`
+    )
+  }
+>
+  ▶ Play
+</button>
 
-      <ul>
-        {results.map((r, i) => (
-          <li key={i}>
-            <strong>{r.caption}</strong> ({r.clip_name}){' '}
-            <button
-              onClick={() =>
-                setVideoUrl(
-                  `https://f003.backblazeb2.com/file/briday-weddings-archive/${r.wedding_id}/${r.clip_name}#t=${r.start_sec}`
-                )
-              }
-            >
-              ▶ Play
-            </button>
           </li>
         ))}
       </ul>
