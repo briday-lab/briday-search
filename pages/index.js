@@ -38,9 +38,8 @@ export default function Home() {
             <strong>{r.caption}</strong> ({r.clip_path}){' '}
             <button
               onClick={() =>
-                setVideoUrl(
-                  `https://f003.backblazeb2.com/file/briday-weddings-archive/${r.clip_path}#t=${r.start_sec}`
-                )
+                const url = `https://f003.backblazeb2.com/file/briday-weddings-archive/${item.video_path}#t=${item.start_sec}`;
+
               }
             >
               ▶ Play
