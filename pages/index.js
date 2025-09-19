@@ -9,32 +9,42 @@ export default function Home() {
   async function handleSearch() {
     const { data, error } = await supabase
       .from('tags')
-      .select('clip_name, caption, start_sec, wedding_id')
+      .select('clip_path, caption, start_sec, wedding_id')
       .ilike('caption', `%${query}%`);
 
-    if (error) console.error(error);
-    else setResults(data);
+    if (error) {
+      console.error(error);
+    } else {
+      setResults(data);
+    }
   }
 
   return (
     <div style={{ padding: 20 }}>
       <h1>🎥 Briday Search</h1>
+
       <input
         type="text"
         placeholder="Search captions..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        style={{ marginRight: '10px' }}
       />
-<button
-  onClick={() =>
-    setVideoUrl(
-      `https://f003.backblazeb2.com/file/briday-weddings-archive/${r.clip_path}#t=${r.start_sec}`
-    )
-  }
->
-  ▶ Play
-</button>
+      <button onClick={handleSearch}>Search</button>
 
+      <ul>
+        {results.map((r, i) => (
+          <li key={i}>
+            <strong>{r.caption}</strong> ({r.clip_path}){' '}
+            <button
+              onClick={() =>
+                setVideoUrl(
+                  `https://f003.backblazeb2.com/file/briday-weddings-archive/${r.clip_path}#t=${r.start_sec}`
+                )
+              }
+            >
+              ▶ Play
+            </button>
           </li>
         ))}
       </ul>
@@ -47,5 +57,3 @@ export default function Home() {
     </div>
   );
 }
-
-
