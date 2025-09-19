@@ -14,8 +14,8 @@ export default function Home() {
     if (!query) return;
     const { data, error } = await supabase
       .from("tags")
-      .select("id, wedding_id, clip_name, start_sec, caption_text, video_path")
-      .ilike("caption_text", `%${query}%`);
+      .select("id, wedding_id, clip_name, start_sec, caption, video_path")
+      .ilike("caption", `%${query}%`);
 
     if (error) {
       console.error("❌ Search error:", error.message);
@@ -47,7 +47,9 @@ export default function Home() {
         {results.length === 0 && <p>No results yet...</p>}
 
         {results.map((item) => {
-          const videoUrl = `https://f003.backblazeb2.com/file/briday-weddings-archive/${item.video_path}#t=${item.start_sec}`;
+          const videoUrl = item.video_path
+            ? `https://f003.backblazeb2.com/file/briday-weddings-archive/${item.video_path}#t=${item.start_sec}`
+            : null;
 
           return (
             <div
@@ -59,17 +61,24 @@ export default function Home() {
                 borderRadius: "8px",
               }}
             >
-              <h3>{item.caption_text}</h3>
+              <h3>{item.caption}</h3>
               <p>
                 Clip: <strong>{item.clip_name}</strong> — Start:{" "}
                 {item.start_sec}s
               </p>
-              <video
-                src={videoUrl}
-                controls
-                width="600"
-                style={{ borderRadius: "8px" }}
-              />
+
+              {videoUrl ? (
+                <video
+                  src={videoUrl}
+                  controls
+                  width="600"
+                  style={{ borderRadius: "8px" }}
+                />
+              ) : (
+                <p style={{ color: "red" }}>
+                  ⚠️ No video_path found for this result
+                </p>
+              )}
             </div>
           );
         })}
